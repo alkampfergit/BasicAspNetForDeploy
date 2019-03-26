@@ -220,4 +220,8 @@
   </Target>
   <Target Name="AfterBuild">
   </Target> -->
+
+  <Target Name="BeforeBuild">
+    <TransformXml Source="Web.config" Transform="Web.$(Configuration).config" Destination="Web.config" />
+  </Target>
 </Project>
