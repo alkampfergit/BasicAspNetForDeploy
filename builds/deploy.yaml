@@ -3,13 +3,20 @@ pool:
   demands:
   - msbuild
   - vstest
-  
+
 trigger:
 - master
 - develop
 - release/*
 - hotfix/*
 - feature/*
+
+variables:
+  AssemblyVersion: '1.0'
+  Solution: 'src/TestWebApp.sln'
+  BuildPlatform: 'any cpu'
+  BuildConfiguration: 'release'
+  SkipTests: false
 
 steps:
 - task: GitVersion@1
@@ -25,7 +32,7 @@ steps:
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
   inputs:
-    restoreSolution: '$(Parameters.solution)'
+    restoreSolution: '$(Solution)'
 
 - task: FileTransform@1
   displayName: 'File Transform: '
@@ -38,7 +45,7 @@ steps:
 - task: MSBuild@1
   displayName: 'Build solution **/*.sln'
   inputs:
-    solution: '$(Parameters.solution)'
+    solution: '$(Solution)'
     platform: '$(BuildPlatform)'
     configuration: '$(BuildConfiguration)'
     msbuildArguments: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:OutDir="." /p:Configuration=$(BuildConfiguration)'
