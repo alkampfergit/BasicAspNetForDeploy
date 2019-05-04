@@ -14,8 +14,10 @@ trigger:
 variables:
   AssemblyVersion: '1.0'
   Solution: 'src/TestWebApp.sln'
-  BuildPlatform: 'any cpu'
-  BuildConfiguration: 'release'
+  WebProject: 'src/TestWebApp/TestWebApp.csproj'
+  BuildPlatform: 'Any CPU'
+  BuildPlatformProject: 'AnyCPU'
+  BuildConfiguration: 'Release'
   SkipTests: false
 
 steps:
@@ -34,21 +36,12 @@ steps:
   inputs:
     restoreSolution: '$(Solution)'
 
-- task: FileTransform@1
-  displayName: 'File Transform: '
+- task: VSBuild@1
+  displayName: "build with visual studio"
   inputs:
-    folderPath: src/TestWebApp/
-    enableXmlTransform: true
-    xmlTransformationRules: '-transform web.$(BuildConfiguration).config -xml web.config'
-    fileType: xml
-
-- task: MSBuild@1
-  displayName: 'Build solution **/*.sln'
-  inputs:
-    solution: '$(Solution)'
-    platform: '$(BuildPlatform)'
+    solution: $(Solution)
     configuration: '$(BuildConfiguration)'
-    msbuildArguments: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:OutDir="." /p:Configuration=$(BuildConfiguration)'
+    platform: '$(BuildPlatform)'
 
 - task: VSTest@2
   displayName: 'Test Assemblies'
@@ -58,6 +51,22 @@ steps:
      !**\obj\**
     platform: '$(BuildPlatform)'
     configuration: '$(BuildConfiguration)'
+
+- task: FileTransform@1
+  displayName: 'File Transform: '
+  inputs:
+    folderPath: src/TestWebApp/
+    enableXmlTransform: true
+    xmlTransformationRules: '-transform web.$(BuildConfiguration).config -xml web.config'
+    fileType: xml
+
+- task: MSBuild@1
+  displayName: 'publish web project'
+  inputs:
+    solution: '$(WebProject)'
+    platform: '$(BuildPlatformProject)'
+    configuration: '$(BuildConfiguration)'
+    msbuildArguments: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:OutDir="." /p:Configuration=$(BuildConfiguration)'
 
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)/WebApp'

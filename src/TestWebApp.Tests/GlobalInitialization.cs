@@ -4,6 +4,7 @@ using System;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using TestWebApp.Core.Sql;
 
 namespace TestWebApp.Tests
@@ -30,7 +31,7 @@ namespace TestWebApp.Tests
             var svc = new DacServices(connectionString);
 
             //need to locate the file.
-            var dacfile = @"..\artifacts\TestWebApp.SqlDatabase.dacpac";
+            var dacfile = FindDacPack();
 
             try
             {
@@ -54,6 +55,23 @@ namespace TestWebApp.Tests
 
                 }
                 );
+        }
+
+        private static string FindDacPack()
+        {
+            var actualDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            while(true)
+            {
+                var files =actualDirectory.GetFiles("TestWebApp.sln");
+                if (files.Length > 0)
+                {
+                    return Path.Combine(actualDirectory.Parent.FullName, "artifacts", "TestWebApp.SqlDatabase.dacpac");
+                }
+                else
+                {
+                    actualDirectory = actualDirectory.Parent;
+                }
+            }
         }
     }
 }
