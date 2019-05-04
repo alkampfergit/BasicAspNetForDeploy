@@ -3,6 +3,13 @@ pool:
   demands:
   - msbuild
   - vstest
+  
+trigger:
+- master
+- develop
+- release/*
+- hotfix/*
+- feature/*
 
 steps:
 - task: GitVersion@1
