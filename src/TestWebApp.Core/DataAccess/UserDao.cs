@@ -38,5 +38,11 @@ SELECT SCOPE_IDENTITY();
                 user.Id = (Int32) newId;
             }
         }
+
+        public List<User> GetAll()
+        {
+            return Sql.DataAccess.CreateQuery("Select * from [dbo].[Users]")
+                .Hydrate<User>();
+        }
     }
 }

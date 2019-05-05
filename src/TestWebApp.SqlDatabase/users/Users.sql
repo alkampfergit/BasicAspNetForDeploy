@@ -6,3 +6,7 @@
     [Surname] NVARCHAR(50) NULL, 
     [Email] VARCHAR(100) NOT NULL
 )
+
+GO
+
+CREATE UNIQUE INDEX [IX_Users_USerName] ON [dbo].[Users] ([UserName])
