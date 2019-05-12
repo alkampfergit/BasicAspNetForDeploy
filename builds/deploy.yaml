@@ -51,6 +51,7 @@ steps:
      !**\obj\**
     platform: '$(BuildPlatform)'
     configuration: '$(BuildConfiguration)'
+  continueOnError: true
 
 - task: FileTransform@1
   displayName: 'File Transform: '
