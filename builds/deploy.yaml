@@ -69,10 +69,16 @@ steps:
     msbuildArguments: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:OutDir="." /p:Configuration=$(BuildConfiguration)'
 
 - task: CopyFiles@2
-  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)/WebApp'
+  displayName: 'Copy published web app to: $(Build.ArtifactStagingDirectory)/WebApp'
   inputs:
     SourceFolder: 'src/TestWebApp/_PublishedWebsites/TestWebApp'
     TargetFolder: '$(Build.ArtifactStagingDirectory)/WebApp'
+
+- task: CopyFiles@2
+  displayName: 'Copy SQL DACPAC: $(Build.ArtifactStagingDirectory)/Sql'
+  inputs:
+    SourceFolder: 'src/TestWebApp.SqlDatabase/bin/$(BuildConfiguration)'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/Sql'
 
 - task: PublishSymbols@2
   displayName: 'Publish symbols path'
@@ -82,8 +88,15 @@ steps:
   continueOnError: true
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact'
+  displayName: 'Publish WebApp Artifact'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/WebApp'
     ArtifactName: WebApp
+  condition: succeededOrFailed()
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish SQL Artifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/Sql'
+    ArtifactName: Sql
   condition: succeededOrFailed()
