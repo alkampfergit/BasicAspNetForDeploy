@@ -109,12 +109,37 @@ stages:
       name: 'DeployTest'
     # creates an environment if it doesn’t exist
     environment: 'MyWebapp-Dev'
+    variables:
+      CONNECTIONSTRING: "Server=localhost\\SQL2016;Integrated Security=SSPI;Initial Catalog=WebDeployMtTest"
+      Key1: "this is key1 for development"
+      Key2: "This is key2 for deveopment"
     strategy:
       # default deployment strategy
       runOnce:
         deploy:
           steps:
-          - script: echo my first deployment
+          
+          - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+            displayName: 'Replace tokens in web.config'
+            inputs:
+              rootDirectory: '$(System.DefaultWorkingDirectory)/Artifacts/WebApp'
+              targetFiles: web.config
+              tokenPrefix: '__'
+              tokenSuffix: '__'
+
+          - task: CopyFiles@2
+            displayName: 'Copy Files to: C:\inetpub\wwwroot\TestApp'
+            inputs:
+              SourceFolder: '$(System.DefaultWorkingDirectory)/Artifacts/WebApp'
+              TargetFolder: 'C:\inetpub\wwwroot\TestApp'
+              CleanTargetFolder: true
+
+          - task: SqlDacpacDeploymentOnMachineGroup@0
+            displayName: 'Deploy using : dacpac'
+            inputs:
+              DacpacFile: '$(System.DefaultWorkingDirectory)/Artifacts/Sql/TestWebApp.SqlDatabase.dacpac'
+              TargetMethod: connectionString
+              ConnectionString: '$(CONNECTIONSTRING)'
 
 ########################################################
 # This starts deploy stage
