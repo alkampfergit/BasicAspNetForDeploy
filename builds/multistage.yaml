@@ -43,9 +43,7 @@ stages:
     - task: VSTest@2
       displayName: 'Test Assemblies'
       inputs:
-        testAssemblyVer2: |
-        **\$(BuildConfiguration)\*test*.dll
-        !**\obj\**
+        testAssemblyVer2: "**\\$(BuildConfiguration)\\*test*.dll"
         platform: '$(BuildPlatform)'
         configuration: '$(BuildConfiguration)'
       continueOnError: true
