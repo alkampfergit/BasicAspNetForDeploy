@@ -101,14 +101,13 @@ stages:
 ########################################################
 # This starts deploy stage
 ########################################################
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/process/stages?view=azure-devops&tabs=yaml
 - stage: Deploy
   jobs:
     # track deployments on the environment
   - deployment: DeployWeb
     pool:
-      vmImage: 'Ubuntu-16.04'
-    # creates an environment if it doesn’t exist
-    environment: 'smarthotel-dev'
+      name: DeployTest
     strategy:
       # default deployment strategy
       runOnce:
