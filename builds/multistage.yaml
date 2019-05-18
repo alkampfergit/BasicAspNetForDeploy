@@ -119,7 +119,7 @@ stages:
         deploy:
           steps:
           
-          - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+          - task: "qetza.replacetokens.replacetokens-task.replacetokens@3"
             displayName: 'Replace tokens in web.config'
             inputs:
               rootDirectory: '$(System.DefaultWorkingDirectory)/Artifacts/WebApp'
