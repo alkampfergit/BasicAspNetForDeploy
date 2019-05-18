@@ -108,6 +108,8 @@ stages:
   - deployment: DeployWeb
     pool:
       name: DeployTest
+    # creates an environment if it doesn’t exist
+    environment: 'MyWebApp-Dev'
     strategy:
       # default deployment strategy
       runOnce:
