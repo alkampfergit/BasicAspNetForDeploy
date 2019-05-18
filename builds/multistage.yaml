@@ -101,41 +101,64 @@ stages:
 ########################################################
 # This starts deploy stage
 ########################################################
-# https://docs.microsoft.com/en-us/azure/devops/pipelines/process/stages?view=azure-devops&tabs=yaml
 - stage: Deploy
-
   jobs:
-  - job: Deploy_on_machine
-    displayName: Deploy on machine test
+    # track deployments on the environment
+  - deployment: DeployWeb
     pool:
-      name: DeployTest
+      name: 'DeployTest'
+    # creates an environment if it doesn’t exist
+    environment: 'MyWebapp-Dev'
+    strategy:
+      # default deployment strategy
+      runOnce:
+        deploy:
+          steps:
+          - script: echo my first deployment
+
+########################################################
+# This starts deploy stage
+########################################################
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/process/stages?view=azure-devops&tabs=yaml
+# https://github.com/microsoft/azure-pipelines-yaml/blob/master/design/pipeline-resources.md#resources-builds
+# - stage: Deploy
+# resources:
+#   pipelines:
+#     - pipeline: Artifacts
+#       source: 
+#   jobs:
+#   - job: Deploy_on_machine
+#     displayName: Deploy on machine test
+#     pool:
+#       name: DeployTest
   
-    variables:
-      CONNECTIONSTRING: "Server=localhost\\SQL2016;Integrated Security=SSPI;Initial Catalog=WebDeployMtTest"
-      Key1: "this is key1 for development"
-      Key2: "This is key2 for deveopment"
+#     variables:
+#       CONNECTIONSTRING: "Server=localhost\\SQL2016;Integrated Security=SSPI;Initial Catalog=WebDeployMtTest"
+#       Key1: "this is key1 for development"
+#       Key2: "This is key2 for deveopment"
 
-    steps:
-    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-      displayName: 'Replace tokens in web.config'
-      inputs:
-        rootDirectory: '$(System.DefaultWorkingDirectory)/Artifacts/WebApp'
-        targetFiles: web.config
-        tokenPrefix: '__'
-        tokenSuffix: '__'
+#     steps:
+#     - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+#       displayName: 'Replace tokens in web.config'
+#       inputs:
+#         rootDirectory: '$(System.DefaultWorkingDirectory)/Artifacts/WebApp'
+#         targetFiles: web.config
+#         tokenPrefix: '__'
+#         tokenSuffix: '__'
 
-    - task: CopyFiles@2
-      displayName: 'Copy Files to: C:\inetpub\wwwroot\TestApp'
-      inputs:
-        SourceFolder: '$(System.DefaultWorkingDirectory)/Artifacts/WebApp'
-        TargetFolder: 'C:\inetpub\wwwroot\TestApp'
-        CleanTargetFolder: true
+#     - task: CopyFiles@2
+#       displayName: 'Copy Files to: C:\inetpub\wwwroot\TestApp'
+#       inputs:
+#         SourceFolder: '$(System.DefaultWorkingDirectory)/Artifacts/WebApp'
+#         TargetFolder: 'C:\inetpub\wwwroot\TestApp'
+#         CleanTargetFolder: true
 
-    # - task: SqlDacpacDeploymentOnMachineGroup@0
-    #   displayName: 'Deploy using : dacpac'
-    #   inputs:
-    #     DacpacFile: '$(System.DefaultWorkingDirectory)/Artifacts/Sql/TestWebApp.SqlDatabase.dacpac'
-    #     TargetMethod: connectionString
-    #     ConnectionString: '$(CONNECTIONSTRING)'
+#     # - task: SqlDacpacDeploymentOnMachineGroup@0
+#     #   displayName: 'Deploy using : dacpac'
+#     #   inputs:
+#     #     DacpacFile: '$(System.DefaultWorkingDirectory)/Artifacts/Sql/TestWebApp.SqlDatabase.dacpac'
+#     #     TargetMethod: connectionString
+#     #     ConnectionString: '$(CONNECTIONSTRING)'
+
 
   
