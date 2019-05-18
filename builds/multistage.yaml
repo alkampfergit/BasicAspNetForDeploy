@@ -134,12 +134,12 @@ stages:
               TargetFolder: 'C:\inetpub\wwwroot\TestApp'
               CleanTargetFolder: true
 
-          - task: SqlDacpacDeploymentOnMachineGroup@0
-            displayName: 'Deploy using : dacpac'
-            inputs:
-              DacpacFile: '$(System.DefaultWorkingDirectory)/Artifacts/Sql/TestWebApp.SqlDatabase.dacpac'
-              TargetMethod: connectionString
-              ConnectionString: '$(CONNECTIONSTRING)'
+          # - task: SqlDacpacDeploymentOnMachineGroup@0
+          #   displayName: 'Deploy using : dacpac'
+          #   inputs:
+          #     DacpacFile: '$(System.DefaultWorkingDirectory)/Artifacts/Sql/TestWebApp.SqlDatabase.dacpac'
+          #     TargetMethod: connectionString
+          #     ConnectionString: '$(CONNECTIONSTRING)'
 
 ########################################################
 # This starts deploy stage
