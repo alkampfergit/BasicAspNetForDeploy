@@ -17,31 +17,20 @@ namespace TestWebApp.Core.DataAccess
             }
             else
             {
-                var newId = Sql.DataAccess.CreateQuery(@"
-INSERT INTO [dbo].[Users]
-           ([UserName]
-           ,[Name]
-           ,[Surname]
-           ,[email])
-     VALUES
-           (@username
-           ,@name
-           ,@surname
-           ,@email);
-SELECT SCOPE_IDENTITY(); 
-")
-                 .SetStringParam("userName", user.UserName)
-                 .SetStringParam("name", user.Name)
-                 .SetStringParam("surname", user.Surname)
-                 .SetStringParam("email", user.Email)
-                 .ExecuteScalar<Decimal>();
-                user.Id = (Int32) newId;
+                var query = Sql.DataAccess.CreateStored("[security].[adduser]")
+                    .SetStringParam("userName", user.UserName)
+                    .SetStringParam("name", user.Name)
+                    .SetStringParam("surname", user.Surname)
+                    .SetStringParam("email", user.Email)
+                    .SetInt32OutParam("identity");
+                query.ExecuteNonQuery();
+                user.Id = query.GetOutParam<Int32>("identity");
             }
         }
 
         public List<User> GetAll()
         {
-            return Sql.DataAccess.CreateQuery("Select * from [dbo].[Users]")
+            return Sql.DataAccess.CreateStored("[security].[GetUsers]")
                 .Hydrate<User>();
         }
     }

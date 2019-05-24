@@ -51,7 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="DataAccess\UserDao.cs" />
     <Compile Include="DbEntities\User.cs" />
     <Compile Include="Sql\DataAccess.cs" />

@@ -626,6 +626,11 @@ namespace TestWebApp.Core.Sql
             return new SqlQuery(s, CommandType.Text, GetFactory(null));
         }
 
+        public static SqlQuery CreateStored(string s)
+        {
+            return new SqlQuery(s, CommandType.StoredProcedure, GetFactory(null));
+        }
+
         public static SqlQuery CreateQueryOn(ConnectionStringSettings connection, string s)
         {
             var query = new SqlQuery(s, CommandType.Text, GetFactory(connection));

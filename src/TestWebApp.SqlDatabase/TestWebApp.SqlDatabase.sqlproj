@@ -56,12 +56,14 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
-    <Folder Include="users" />
+    <Folder Include="security" />
+    <Folder Include="stored" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="users\Users.sql" />
-    <Build Include="users\Procedure1.sql" />
-    <Build Include="security.sql" />
+    <Build Include="security\Users.sql" />
+    <Build Include="security\AddUser.sql" />
+    <Build Include="security\security.sql" />
+    <Build Include="security\GetUsers.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="TestWebApp.SqlDatabase.refactorlog" />
