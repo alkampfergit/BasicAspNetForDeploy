@@ -21,4 +21,10 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="[IX_Users_USerName]" />
   </Operation>
+  <Operation Name="Move Schema" Key="322bc4a8-5793-42a6-8dd2-29537fc4fcf8" ChangeDateTime="05/24/2019 22:14:01">
+    <Property Name="ElementName" Value="[dbo].[Users]" />
+    <Property Name="ElementType" Value="SqlTable" />
+    <Property Name="NewSchema" Value="security" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
 </Operations>
