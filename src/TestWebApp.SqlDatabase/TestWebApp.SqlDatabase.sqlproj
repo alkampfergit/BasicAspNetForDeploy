@@ -58,15 +58,19 @@
     <Folder Include="Properties" />
     <Folder Include="security" />
     <Folder Include="stored" />
+    <Folder Include="auth" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="security\Users.sql" />
-    <Build Include="security\AddUser.sql" />
     <Build Include="security\security.sql" />
-    <Build Include="security\GetUsers.sql" />
+    <Build Include="auth\auth.sql" />
+    <Build Include="auth\AddUser.sql" />
+    <Build Include="auth\Users.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="TestWebApp.SqlDatabase.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="auth\GetUsers.sql" />
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>xcopy $(ProjectDir)$(OutputPath)*.* $(SolutionDir)..\artifacts /Y</PostBuildEvent>
