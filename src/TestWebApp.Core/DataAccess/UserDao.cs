@@ -17,7 +17,7 @@ namespace TestWebApp.Core.DataAccess
             }
             else
             {
-                var query = Sql.DataAccess.CreateStored("[auth].[adduser]")
+                var query = Sql.DataAccess.CreateStored("[security].[adduser]")
                     .SetStringParam("userName", user.UserName)
                     .SetStringParam("name", user.Name)
                     .SetStringParam("surname", user.Surname)
@@ -30,7 +30,7 @@ namespace TestWebApp.Core.DataAccess
 
         public List<User> GetAll()
         {
-            return Sql.DataAccess.CreateStored("[auth].[GetUsers]")
+            return Sql.DataAccess.CreateStored("[security].[GetUsers]")
                 .Hydrate<User>();
         }
     }

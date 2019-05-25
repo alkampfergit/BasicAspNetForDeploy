@@ -45,4 +45,22 @@
     <Property Name="NewSchema" Value="auth" />
     <Property Name="IsNewSchemaExternal" Value="False" />
   </Operation>
+  <Operation Name="Move Schema" Key="6cc3683d-bf3d-469e-8c63-5c1e541299f7" ChangeDateTime="05/25/2019 09:21:18">
+    <Property Name="ElementName" Value="[auth].[Users]" />
+    <Property Name="ElementType" Value="SqlTable" />
+    <Property Name="NewSchema" Value="security" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="aed8edb9-6914-4d0f-8036-13dab35c31ae" ChangeDateTime="05/25/2019 09:38:19">
+    <Property Name="ElementName" Value="[auth].[adduser]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="security" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="30e79647-3582-4994-85cc-5ee6cf6ac667" ChangeDateTime="05/25/2019 09:38:30">
+    <Property Name="ElementName" Value="[auth].[GetUsers]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="security" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
 </Operations>

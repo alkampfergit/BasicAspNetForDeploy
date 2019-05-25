@@ -1,4 +1,4 @@
-﻿CREATE TABLE [auth].[Users]
+﻿CREATE TABLE [security].[Users]
 (
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
     [UserName] VARCHAR(80) NOT NULL, 
@@ -9,4 +9,4 @@
 
 GO
 
-CREATE UNIQUE INDEX [IX_Users_USerName] ON [auth].[Users] ([UserName])
+CREATE UNIQUE INDEX [IX_Users_USerName] ON [security].[Users] ([UserName])
