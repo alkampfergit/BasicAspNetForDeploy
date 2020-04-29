@@ -1,0 +1,87 @@
+pool:
+  name: Default
+  demands:
+  - msbuild
+  - vstest
+
+trigger:
+  branches:
+    include:
+      - master
+      - develop
+      - release/*
+      - hotfix/*
+      - feature/*
+
+variables:
+  Solution: 'src/TestWebApp.sln'
+  WebProject: 'src/TestWebApp/TestWebApp.csproj'
+  BuildPlatform: 'Any CPU'
+  BuildPlatformProject: 'AnyCPU'
+  BuildConfiguration: 'Release'
+
+steps:
+
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core sdk 3.1.201'
+    inputs:
+      version: 3.1.201
+      performMultiLevelLookup: true
+  
+  - task: PowerShell@2
+    displayName: 'Pre build script'
+    inputs:
+      targetType: filePath
+      workingDirectory: $(Build.SourcesDirectory)
+      filePath: "$(Build.SourcesDirectory)/PreBuild.ps1"
+      arguments: -configuration $(BuildConfiguration)
+
+  - task: NuGetToolInstaller@0
+    displayName: 'Use NuGet 5'
+    inputs:
+      versionSpec: 5.x
+    
+  - task: NuGetCommand@2
+    displayName: 'NuGet restore'
+    inputs:
+      restoreSolution: '$(Solution)'
+
+  - task: VSBuild@1
+    displayName: "build with visual studio"
+    inputs:
+      solution: $(Solution)
+      configuration: '$(BuildConfiguration)'
+      platform: '$(BuildPlatform)'
+
+  - task: VSTest@2
+    displayName: 'Test Assemblies'
+    inputs:
+      testAssemblyVer2: |
+        **\$(BuildConfiguration)\*test*.dll
+        !**\obj\**
+        platform: '$(BuildPlatform)'
+        configuration: '$(BuildConfiguration)'
+    continueOnError: true
+
+  - task: MSBuild@1
+    displayName: 'publish web project'
+    inputs:
+      solution: '$(WebProject)'
+      platform: '$(BuildPlatformProject)'
+      configuration: '$(BuildConfiguration)'
+      msbuildArguments: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:OutDir=".\release" /p:Configuration=$(BuildConfiguration)'
+
+  - task: PowerShell@2
+    displayName: 'Post build script'
+    inputs:
+      targetType: filePath
+      workingDirectory: $(Build.SourcesDirectory)
+      filePath: "$(Build.SourcesDirectory)/PostBuild.ps1"
+      arguments: -configuration $(BuildConfiguration) -destinationDirectory $(Build.ArtifactStagingDirectory) -webSiteOutDir release
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: Artifacts
+    
