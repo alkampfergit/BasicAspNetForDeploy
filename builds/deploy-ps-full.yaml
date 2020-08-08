@@ -1,0 +1,47 @@
+pool:
+  name: Default
+  demands:
+  - msbuild
+  - vstest
+
+trigger:
+  branches:
+    include:
+      - master
+      - develop
+      - release/*
+      - hotfix/*
+      - feature/*
+
+variables:
+  BuildPlatform: 'Any CPU'
+  BuildPlatformProject: 'AnyCPU'
+  BuildConfiguration: 'Release'
+
+steps:
+
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core sdk 3.1.201'
+    inputs:
+      version: 3.1.201
+      performMultiLevelLookup: true
+  
+  - task: PowerShell@2
+    displayName: 'Full Powershell Build'
+    inputs:
+      targetType: filePath
+      workingDirectory: $(Build.SourcesDirectory)
+      filePath: "$(Build.SourcesDirectory)/Build.ps1"
+      arguments: -buildConfiguration $(BuildConfiguration) -destinationDirectory $(Build.ArtifactStagingDirectory)
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'NUnit'
+      testResultsFiles: '**/TestResult.xml'
+      testRunTitle: 'UnitTests' 
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: Artifacts

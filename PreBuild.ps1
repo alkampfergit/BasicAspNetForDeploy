@@ -2,7 +2,10 @@ param (
     [string] $configuration = "release"
 )
 
-Install-package BuildUtils -Confirm:$false -Scope CurrentUser -Verbose -Force
+Install-package VsSetup -Confirm:$false -Scope CurrentUser -Force
+Import-Module Vssetup
+
+Install-package BuildUtils -Confirm:$false -Scope CurrentUser -Force
 Import-Module BuildUtils
 
 $runningDirectory = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
