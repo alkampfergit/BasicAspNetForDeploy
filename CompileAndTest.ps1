@@ -40,7 +40,7 @@ if ($false -eq $?)
 }
 
 Write-Host "Running nunit tests with console runner"
-$nunitConsoleRunner = GEt-NunitTestsConsoleRunner
+$nunitConsoleRunner = Get-NunitTestsConsoleRunner
 set-alias nunit "$nunitConsoleRunner"
 
 if (![System.String]::IsNullOrEmpty($buildId)) 
@@ -50,7 +50,7 @@ if (![System.String]::IsNullOrEmpty($buildId))
 }
 else 
 {
-    Write-Host "running nunit: $runningDirectory\src\TestWebApp.Tests\Bin\$buildConfiguration\TestWebApp.Tests.dll"
+    Write-Host "running nunit: $nunitConsoleRunner $runningDirectory\src\TestWebApp.Tests\Bin\$buildConfiguration\TestWebApp.Tests.dll"
     nunit "$runningDirectory\src\TestWebApp.Tests\Bin\$buildConfiguration\TestWebApp.Tests.dll"
 }
 
