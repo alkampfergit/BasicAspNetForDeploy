@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="10107198-c39b-4ab3-a4e9-69d2ea4cd8cf" ChangeDateTime="05/04/2019 06:50:34">
+    <Property Name="ElementName" Value="[dbo].[Users].[dasfasdf]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Users]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UserName" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c1b9f007-0e98-48b4-b062-58c4ed0d1ee8" ChangeDateTime="05/04/2019 07:49:23">
+    <Property Name="ElementName" Value="[dbo].[Users].[email]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Users]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Email" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="74d782ff-b93c-4b82-aee9-b5f1884c5384" ChangeDateTime="05/05/2019 15:27:40">
+    <Property Name="ElementName" Value="[dbo].[Users].[IX_Users_Column]" />
+    <Property Name="ElementType" Value="SqlIndex" />
+    <Property Name="ParentElementName" Value="[dbo].[Users]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[IX_Users_USerName]" />
+  </Operation>
+  <Operation Name="Move Schema" Key="322bc4a8-5793-42a6-8dd2-29537fc4fcf8" ChangeDateTime="05/24/2019 22:14:01">
+    <Property Name="ElementName" Value="[dbo].[Users]" />
+    <Property Name="ElementType" Value="SqlTable" />
+    <Property Name="NewSchema" Value="security" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="838fc839-de69-4fb5-aba5-52b4ad9e06aa" ChangeDateTime="05/24/2019 22:42:33">
+    <Property Name="ElementName" Value="[security].[Users]" />
+    <Property Name="ElementType" Value="SqlTable" />
+    <Property Name="NewSchema" Value="auth" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="553b95c5-73bf-418d-bd64-84700704d405" ChangeDateTime="05/24/2019 22:42:48">
+    <Property Name="ElementName" Value="[security].[adduser]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="auth" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="a34a24de-a13b-486d-9a1e-d07d3143a3b8" ChangeDateTime="05/24/2019 22:42:57">
+    <Property Name="ElementName" Value="[security].[GetUsers]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="auth" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="6cc3683d-bf3d-469e-8c63-5c1e541299f7" ChangeDateTime="05/25/2019 09:21:18">
+    <Property Name="ElementName" Value="[auth].[Users]" />
+    <Property Name="ElementType" Value="SqlTable" />
+    <Property Name="NewSchema" Value="security" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="aed8edb9-6914-4d0f-8036-13dab35c31ae" ChangeDateTime="05/25/2019 09:38:19">
+    <Property Name="ElementName" Value="[auth].[adduser]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="security" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="30e79647-3582-4994-85cc-5ee6cf6ac667" ChangeDateTime="05/25/2019 09:38:30">
+    <Property Name="ElementName" Value="[auth].[GetUsers]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="security" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+</Operations>
