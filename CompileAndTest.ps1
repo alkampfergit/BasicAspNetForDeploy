@@ -41,7 +41,8 @@ if ($false -eq $?)
 
 Write-Host "Running nunit tests with console runner"
 $nunitConsoleRunner = Get-NunitTestsConsoleRunner
-set-alias nunit "$nunitConsoleRunner"
+Write-Host "Get-NunitTestsConsoleRunner Found nunit console runner at: $nunitConsoleRunner"
+set-alias nunit $nunitConsoleRunner
 
 if (![System.String]::IsNullOrEmpty($buildId)) 
 {
