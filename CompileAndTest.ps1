@@ -4,7 +4,8 @@ Execute build (nuget restore plus build) and then runs
 nunit tests.
 #>
 param (
-    [string] $buildConfiguration = "release"
+    [string] $buildConfiguration = "release",
+    [bool] $skipTests = $false
 )
 
 $runningDirectory = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
@@ -39,26 +40,28 @@ if ($false -eq $?)
   exit(1)
 }
 
-Write-Host "Running nunit tests with console runner"
-$nunitConsoleRunner = Get-NunitTestsConsoleRunner
-Write-Host "Get-NunitTestsConsoleRunner Found nunit console runner at: $nunitConsoleRunner"
-set-alias nunit $nunitConsoleRunner
-
-if (![System.String]::IsNullOrEmpty($buildId)) 
+if ($false -eq $skipTests) 
 {
-    Write-Host "running nunit inside a Azure DevOps build: nunit "$runningDirectory\src\TestWebApp.Tests\Bin\$buildConfiguration\TestWebApp.Tests.dll" /out:TestResult.xml"
-    nunit "$runningDirectory\src\TestWebApp.Tests\Bin\$buildConfiguration\TestWebApp.Tests.dll" /out:TestResult.xml
-}
-else 
-{
-    Write-Host "running nunit: $nunitConsoleRunner $runningDirectory\src\TestWebApp.Tests\Bin\$buildConfiguration\TestWebApp.Tests.dll"
-    nunit "$runningDirectory\src\TestWebApp.Tests\Bin\$buildConfiguration\TestWebApp.Tests.dll"
-}
+  Write-Host "Running nunit tests with console runner"
+  $nunitConsoleRunner = Get-NunitTestsConsoleRunner
+  Write-Host "Get-NunitTestsConsoleRunner Found nunit console runner at: $nunitConsoleRunner"
+  set-alias nunit $nunitConsoleRunner
 
+  if (![System.String]::IsNullOrEmpty($buildId)) 
+  {
+      Write-Host "running nunit inside a Azure DevOps build: nunit "$runningDirectory\src\TestWebApp.Tests\Bin\$buildConfiguration\TestWebApp.Tests.dll" /out:TestResult.xml"
+      nunit "$runningDirectory\src\TestWebApp.Tests\Bin\$buildConfiguration\TestWebApp.Tests.dll" /out:TestResult.xml
+  }
+  else 
+  {
+      Write-Host "running nunit: $nunitConsoleRunner $runningDirectory\src\TestWebApp.Tests\Bin\$buildConfiguration\TestWebApp.Tests.dll"
+      nunit "$runningDirectory\src\TestWebApp.Tests\Bin\$buildConfiguration\TestWebApp.Tests.dll"
+  }
 
-if ($false -eq $?)
-{
-  Write-Error "Nunit runner exit code indicate test failure."
-  Write-Host "##vso[task.logissue type=error]Nunit runner exit code indicate test failure."
-  exit(2)
+  if ($false -eq $?)
+  {
+    Write-Error "Nunit runner exit code indicate test failure."
+    Write-Host "##vso[task.logissue type=error]Nunit runner exit code indicate test failure."
+    exit(2)
+  }
 }
