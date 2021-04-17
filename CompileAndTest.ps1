@@ -45,12 +45,12 @@ set-alias nunit "$nunitConsoleRunner"
 
 if (![System.String]::IsNullOrEmpty($buildId)) 
 {
-    Write-Host "running nunit inside a Azure DevOps build"
+    Write-Host "running nunit inside a Azure DevOps build: nunit "$runningDirectory\src\TestWebApp.Tests\Bin\$buildConfiguration\TestWebApp.Tests.dll" /out:TestResult.xml"
     nunit "$runningDirectory\src\TestWebApp.Tests\Bin\$buildConfiguration\TestWebApp.Tests.dll" /out:TestResult.xml
 }
 else 
 {
-    Write-Host "running nunit"
+    Write-Host "running nunit: $runningDirectory\src\TestWebApp.Tests\Bin\$buildConfiguration\TestWebApp.Tests.dll"
     nunit "$runningDirectory\src\TestWebApp.Tests\Bin\$buildConfiguration\TestWebApp.Tests.dll"
 }
 
