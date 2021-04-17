@@ -7,15 +7,20 @@ param (
     [string] $buildConfiguration = "release"
 )
 
+$runningDirectory = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
+$srcDirectory = "$runningDirectory\src"
+$slnName = "$runningDirectory\src\TestWebApp.sln" 
+$testProject = "$runningDirectory\src\TestWebApp\TestWebApp.csproj" 
+
 Write-Host "Restoring nuget packages with nuget commandline"
 $nugetLocation = Get-NugetLocation
 set-alias nuget $nugetLocation 
-nuget restore .\src
+nuget restore $srcDirectory
 
 Write-Host "Executing a build of solution with msbuild"
 $msbuildLocation = Get-LatestMsbuildLocation
 set-alias msb $msbuildLocation 
-msb .\src\TestWebApp.sln /p:Configuration=release
+msb $slnName /p:Configuration=$buildConfiguration
 
 if ($false -eq $?)
 {
@@ -25,7 +30,7 @@ if ($false -eq $?)
 }
 
 Write-Host "executing publishing of web site with msbuild with version"
-msb .\src\TestWebApp\TestWebApp.csproj /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:OutDir=".\$webSiteOutDir" /p:Configuration=$buildConfiguration
+msb $testProject /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:OutDir=".\$webSiteOutDir" /p:Configuration=$buildConfiguration
 
 if ($false -eq $?)
 {
@@ -41,12 +46,12 @@ set-alias nunit "$nunitConsoleRunner"
 if (![System.String]::IsNullOrEmpty($buildId)) 
 {
     Write-Host "running nunit inside a Azure DevOps build"
-    nunit ".\src\TestWebApp.Tests\Bin\$buildConfiguration\TestWebApp.Tests.dll" /out:TestResult.xml
+    nunit "$runningDirectory\src\TestWebApp.Tests\Bin\$buildConfiguration\TestWebApp.Tests.dll" /out:TestResult.xml
 }
 else 
 {
     Write-Host "running nunit"
-    nunit ".\src\TestWebApp.Tests\Bin\$buildConfiguration\TestWebApp.Tests.dll"
+    nunit "$runningDirectory\src\TestWebApp.Tests\Bin\$buildConfiguration\TestWebApp.Tests.dll"
 }
 
 
